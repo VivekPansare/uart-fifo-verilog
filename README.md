@@ -91,7 +91,7 @@ Generates enable pulses to maintain the UART transmission speed.
 
 Below are screenshots from Vivado behavioral simulation showing correct UART data transmission and reception.
 
-![UART Waveform](waveform.png)
+![UART Waveform](Waveform1.png)
 
 ![UART Waveform](waveform2.png)
 
