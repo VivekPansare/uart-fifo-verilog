@@ -95,7 +95,14 @@ Below are screenshots from Vivado behavioral simulation showing correct UART dat
 
 ![UART Waveform](waveform2.png)
 
+## FPGA Implementation Floorplan
 
+After successful synthesis and implementation in Vivado, the design was mapped onto the FPGA fabric.  
+The device floorplan view shows how the synthesized logic (UART TX, UART RX, FIFO, and Baud Rate Generator) is placed within the FPGA's configurable logic blocks (CLBs) and routing resources.
+
+This confirms that the design is not only functionally correct in simulation but also successfully placed and routed on the FPGA architecture.
+
+![FPGA Floorplan](device_floorplan.png)
 
 ## Tools Used
 
