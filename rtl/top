@@ -1,0 +1,55 @@
+module top(input rst,input [7:0]data_in,input clk,input rdy_clr,output tx_full,ftwr,ftrd,frwr,frrd,rdy,busy,output [7:0]data_out);
+
+wire rx_enb;
+wire tx_enb;
+wire tx;
+wire[7:0]data_out_r,data_out_F;
+// TX FIFO signals
+wire tx_empty;
+wire tx_almost_full, tx_almost_empty;
+wire tx_overflow, tx_underflow;
+
+
+// RX FIFO signal
+wire rx_full, rx_empty;
+wire rx_almost_full, rx_almost_empty;
+wire rx_overflow, rx_underflow,wr_tx;
+
+ assign wr_tx=(!tx_empty && !busy);
+assign ftwr=(!tx_full);
+assign ftrd=(!tx_empty && !busy);
+assign frwr=(rdy);
+assign frrd=(!rx_empty);
+
+baudRateGenerator br(clk,tx_enb,rx_enb);
+FIFO8x8 ft(
+    .clk(clk),
+    .rst(rst),
+    .wr_enb(ftwr),
+    .rd_enb(ftrd),
+    .data_in_F(data_in),
+    .full(tx_full),
+    .empty(tx_empty),
+    .almost_full(tx_almost_full),
+    .almost_empty(tx_almost_empty),
+    .overflow(tx_overflow),
+    .underflow(tx_underflow),
+    .data_out_F(data_out_F)
+);
+tx s( clk,wr_tx,tx_enb, rst,data_out_F, tx,busy);
+rx r(clk,rdy_clr,rx_enb,tx,rst,rdy,data_out_r);
+FIFO8x8 fr(
+    .clk(clk),
+    .rst(rst),
+    .wr_enb(frwr),
+    .rd_enb(frrd),
+    .data_in_F(data_out_r),
+    .full(rx_full),
+    .empty(rx_empty),
+    .almost_full(rx_almost_full),
+    .almost_empty(rx_almost_empty),
+    .overflow(rx_overflow),
+    .underflow(rx_underflow),
+    .data_out_F(data_out)
+);
+endmodule
